@@ -1,5 +1,12 @@
-# from settings import bot
+from telebot import types
+
+from models import (
+    User,
+    TemplateTraining,
+    TemplateExercise,
+    Training,
+    Exercise
+)
+from settings import bot
 
 
-def template_generating(message):
-    template_name = message.text

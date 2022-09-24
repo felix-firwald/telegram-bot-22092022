@@ -24,6 +24,10 @@ class User(Model):
     chat_id = IntegerField()
     user_id = IntegerField()
 
+    @staticmethod
+    def list():
+        query = User.select()
+
     class Meta:
         database = db
         order_by = 'id'
@@ -37,10 +41,13 @@ class TemplateTraining(Model):
     author = ForeignKeyField(User, to_field='id')
     name = CharField(max_length=30)
 
-    order_by = 'id'
+    @staticmethod
+    def list():
+        query = TemplateTraining.select()
 
     class Meta:
         database = db
+        order_by = 'id'
 
 
 class TemplateExercise(Model):
@@ -50,6 +57,10 @@ class TemplateExercise(Model):
     id = PrimaryKeyField(unique=True)
     template = ForeignKeyField(TemplateTraining, to_field='id')
     name = CharField(max_length=75)
+
+    @staticmethod
+    def list():
+        query = TemplateExercise.select()
 
     class Meta:
         database = db
@@ -64,6 +75,10 @@ class Training(Model):
     start = DateTimeField(default=datetime.now)
     end = DateTimeField(default=datetime.now)
     template = ForeignKeyField(TemplateTraining, to_field='name')
+
+    @staticmethod
+    def list():
+        query = Training.select()
 
     class Meta:
         database = db
@@ -80,6 +95,10 @@ class Exercise(Model):
     time = TimeField(default=datetime.now)
     count = IntegerField()
     weight = IntegerField()
+
+    @staticmethod
+    def list():
+        query = Exercise.select()
 
     class Meta:
         database = db

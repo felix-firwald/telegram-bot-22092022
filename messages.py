@@ -1,4 +1,5 @@
-from bot import bot
+# from settings import bot
 
 
-@bot.message_handler(content_types=['text'])
+def template_generating(message):
+    template_name = message.text

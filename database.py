@@ -1,5 +1,4 @@
 import sqlite3
-from unicodedata import name
 from peewee import SqliteDatabase
 
 from models import (
@@ -59,7 +58,7 @@ def get_templates_of_user(user_id):
 def get_exercises_of_template(id):
     '''
     возвращает кортеж,
-    где первый элемент - имя шаблона, второй - упражнения
+    где первый элемент - имя шаблона, второй - упражнения (names)
     '''
     with db:
         template_name = TemplateTraining.get(TemplateTraining.id == id)

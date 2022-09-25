@@ -69,6 +69,7 @@ class Training(Model):
     start = DateTimeField(default=datetime.now)
     end = DateTimeField(default=datetime.now)
     template = ForeignKeyField(TemplateTraining, to_field='name')
+    user = ForeignKeyField(User, to_field='user_id')
 
     class Meta:
         database = db

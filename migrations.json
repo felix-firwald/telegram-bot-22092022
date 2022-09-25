@@ -2,7 +2,5 @@
   "prerun": "# some code here",
   "directory": "migrations",
   "history": "migratehistory",
-  "models": [
-    "models.User"
-  ]
+  "models": []
 }

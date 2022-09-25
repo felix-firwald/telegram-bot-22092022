@@ -89,3 +89,17 @@ class Exercise(Model):
     class Meta:
         database = db
         order_by = 'time'
+
+
+class Settings(Model):
+    """
+    Класс, хранящий настройки для юзера.
+    weights - какие "веса" предлагать кнопками
+    при описании подхода
+    times - какие "количества раз" предлагать кнопками
+    при описании подхода
+    """
+    id = PrimaryKeyField(unique=True)
+    user = ForeignKeyField(User, to_field='user_id')
+    weights = CharField()
+    times = CharField()

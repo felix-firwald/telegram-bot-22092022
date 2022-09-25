@@ -1,8 +1,11 @@
 import sqlite3
+from unicodedata import name
 from peewee import SqliteDatabase
 
 from models import (
     User,
+    TemplateTraining,
+    TemplateExercise
 )
 
 db = SqliteDatabase('data.db')
@@ -43,3 +46,28 @@ def get_user_or_create(message):
             )
             user.save()
             return user
+
+
+def get_templates_of_user(user_id):
+    with db:
+        templates = TemplateTraining.select().where(
+            TemplateTraining.author == user_id
+        )
+    return templates
+
+
+def get_exercises_of_template(id):
+    '''
+    возвращает кортеж,
+    где первый элемент - имя шаблона, второй - упражнения
+    '''
+    with db:
+        template_name = TemplateTraining.get(TemplateTraining.id == id)
+        exercises = TemplateExercise.select().where(
+            TemplateExercise.template == template_name
+        )
+    names = list()
+    for each in list(exercises):
+        print(each)
+        names.append(each.name)
+    return (template_name.name, names)

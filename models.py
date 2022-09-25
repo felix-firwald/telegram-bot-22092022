@@ -34,7 +34,7 @@ class TemplateTraining(Model):
     Класс, хранящий шаблоны тренировок.
     """
     id = PrimaryKeyField(unique=True)
-    author = ForeignKeyField(User, to_field='id')
+    author = ForeignKeyField(User, to_field='user_id')
     name = CharField(max_length=30)
 
     class Meta:

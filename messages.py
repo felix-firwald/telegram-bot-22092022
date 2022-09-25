@@ -54,3 +54,15 @@ def exercise_generating(message, training):
             exercise_generating,
             training
         )
+
+
+def create_a_new_training(message, data):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=4)
+    markup.add(types.KeyboardButton(f"{i}"))
+    bot.send_message(
+        message.chat.id,
+        'Укажите количество',
+        reply_markup=markup
+    )
+
+    # bot.register_next_step_handler(MESSAGE, FUNCTION)

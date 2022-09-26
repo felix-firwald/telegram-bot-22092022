@@ -7,7 +7,8 @@ from models import (
     User,
     TemplateTraining,
     TemplateExercise,
-    Training
+    Training,
+    Exercise
 )
 
 db = SqliteDatabase('data.db')
@@ -48,6 +49,18 @@ def save_end_of_training(training):
     with db:
         training.end = datetime.now()
         training.save()
+    return training.id
+
+
+def save_exercise(count, training, exercise, weight):
+    with db:
+        Exercise.create(
+            name=exercise,
+            count=int(count),
+            weight=weight,
+            training=training.id,
+            time=datetime.now()
+        )
 
 
 def clear():
@@ -107,6 +120,20 @@ def get_exercises_of_template(id):
         )
     names = list()
     for each in list(exercises):
-        print(each)
         names.append(each.name)
     return (template_name.name, names)
+
+
+def get_exercises_of_training(id):
+    with db:
+        exercises = Exercise.select().where(
+            Exercise.training == id
+        )
+        print(exercises)
+        training = Training.get(Training.id == id)
+    return (
+        exercises,
+        training.template,
+        training.start,
+        training.end
+    )

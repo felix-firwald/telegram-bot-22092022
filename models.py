@@ -14,6 +14,7 @@ from peewee import (
 db = SqliteDatabase('data.db')
 
 
+
 class User(Model):
     """
     Класс пользователя, который написал боту.
@@ -71,7 +72,7 @@ class Training(Model):
     """
     id = PrimaryKeyField(unique=True)
     start = DateTimeField(default=datetime.now)
-    end = DateTimeField(default=datetime.now)
+    end = DateTimeField(null=True)
     template = ForeignKeyField(
         TemplateTraining,
         to_field='name',
@@ -93,7 +94,7 @@ class Exercise(Model):
     Класс, хранящий сделанные упражнения.
     """
     id = PrimaryKeyField(unique=True)
-    template = ForeignKeyField(TemplateExercise, to_field='name')
+    name = CharField()
     training = ForeignKeyField(
         Training,
         to_field='id',

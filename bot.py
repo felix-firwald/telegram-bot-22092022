@@ -11,15 +11,33 @@ from database import (
 from settings import (
     bot,
     DEFAULT_ANSWER,
-    MENU_COMMANDS
+    MENU_COMMANDS,
+    USE_MENU
 )
 from messages import (
     template_generating,
     create_a_new_training,
     messages_for_delete
 )
+# from models import *
 
 db = SqliteDatabase('data.db')
+# db.create_tables([
+#    Exercise,
+#    Training,
+#    TemplateExercise,
+#    TemplateTraining,
+#    User
+# ])
+
+@bot.message_handler(commands=["start"])
+def answer_to_start(message):
+    get_user_or_create(message)
+    bot.send_message(
+        message.chat.id,
+        f'Привет, я бот для <b>учета тренировок</b>{USE_MENU}',
+        parse_mode='html'
+    )
 
 
 @bot.message_handler(commands=["menu"])

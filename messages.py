@@ -147,14 +147,15 @@ def training_complete(message, training):
 
 
 def show_made_training(message, id):
+    format = '%H:%M'
     training = get_exercises_of_training(id)
     exercises = [[i.name, i.weight, i.count] for i in training[0]]
     name, start_time, end_time = training[1], training[2], training[3]
-    duration = (end_time).strftime('%M мин')
+    duration = (end_time - start_time).strftime(format)
     del training
-    start_time = start_time.strftime('%H:%M')
-    end_time = end_time.strftime('%H:%M')
-    print(* exercises, sep='\n')
+    start_time = start_time.strftime(format)
+    end_time = end_time.strftime(format)
+
     validation_dict = dict()
     for i in range(len(exercises)):
         ex = exercises[i]
@@ -171,12 +172,12 @@ def show_made_training(message, id):
         f'\nКонец: {end_time}'
         f'\nДлительность: {duration}</i>'
     )
+    del duration
     for key, value in validation_dict.items():
         count += 1
         string += f'\n\n{count}. {key}'
         for weight, times in value:
             string += f'\n - {weight} кг {times} раз'
-    print(validation_dict)
     bot.send_message(
         message.chat.id,
         string,

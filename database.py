@@ -131,9 +131,12 @@ def get_exercises_of_training(id):
         )
         print(exercises)
         training = Training.get(Training.id == id)
+        name = TemplateTraining.get(
+            TemplateTraining.id == training.template
+        )
     return (
         exercises,
-        training.template,
+        name,
         training.start,
         training.end
     )

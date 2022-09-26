@@ -151,7 +151,6 @@ def show_made_training(message, id):
     training = get_exercises_of_training(id)
     exercises = [[i.name, i.weight, i.count] for i in training[0]]
     name, start_time, end_time = training[1], training[2], training[3]
-    duration = (end_time - start_time).strftime(format)
     del training
     start_time = start_time.strftime(format)
     end_time = end_time.strftime(format)
@@ -169,8 +168,7 @@ def show_made_training(message, id):
     string = (
         f'{name}\n'
         f'\n<i>Начало: {start_time}'
-        f'\nКонец: {end_time}'
-        f'\nДлительность: {duration}</i>'
+        f'\nКонец: {end_time}</i>'
     )
     del duration
     for key, value in validation_dict.items():

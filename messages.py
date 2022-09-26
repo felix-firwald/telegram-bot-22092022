@@ -170,7 +170,6 @@ def show_made_training(message, id):
         f'\n<i>Начало: {start_time}'
         f'\nКонец: {end_time}</i>'
     )
-    del duration
     for key, value in validation_dict.items():
         count += 1
         string += f'\n\n{count}. {key}'

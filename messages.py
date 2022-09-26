@@ -150,7 +150,7 @@ def show_made_training(message, id):
     training = get_exercises_of_training(id)
     exercises = [[i.name, i.weight, i.count] for i in training[0]]
     name, start_time, end_time = training[1], training[2], training[3]
-    duration = end_time - start_time
+    duration = (end_time).strftime('%M мин')
     del training
     start_time = start_time.strftime('%H:%M')
     end_time = end_time.strftime('%H:%M')

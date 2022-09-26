@@ -1,34 +1,39 @@
 from datetime import datetime
 
 from telebot import types
-from peewee import SqliteDatabase
+from peewee import SqliteDatabase, IntegrityError
 
-from models import (
-    TemplateTraining,
-    TemplateExercise,
-    Training
+from database import (
+    save_template_training,
+    save_template_exercise,
+    save_training,
+    save_end_of_training
 )
 from settings import bot
 
 db = SqliteDatabase('data.db')
 
 messages_for_delete = []
+g_ex = 'Теперь укажи названия упражнений — по одному на каждое сообщение.'
 
 
 def template_generating(message):
-    with db:
-        training = TemplateTraining.create(
-            name=message.text.capitalize(),
-            author=message.from_user.id
+    try:
+        training = save_template_training(message)  # запрос в базу
+    except IntegrityError:
+        error = bot.send_message(
+            message.chat.id,
+            'Ошибка!'
         )
-        training.save()
-    gen_ex = bot.send_message(
-        message.chat.id,
-        'Теперь укажи названия упражнений — по одному на каждое сообщение.'
-    )
-    bot.register_next_step_handler(
-        gen_ex, exercise_generating, training
-    )
+        bot.register_next_step_handler(error, template_generating)
+    else:
+        gen_ex = bot.send_message(
+            message.chat.id,
+            g_ex
+        )
+        bot.register_next_step_handler(
+            gen_ex, exercise_generating, training
+        )
 
 
 def exercise_generating(message, training):
@@ -36,7 +41,7 @@ def exercise_generating(message, training):
         print(messages_for_delete)
         bot.delete_message(message.chat.id, messages_for_delete.pop(0))
 
-    if message.text.lower() == 'да, это всё':  # если это всё
+    if message.text.lower() == 'да, это всё':
         bot.send_message(
             message.chat.id,
             'Шаблон создан!',
@@ -44,12 +49,7 @@ def exercise_generating(message, training):
         )
         bot.clear_step_handler_by_chat_id(chat_id=message.chat.id)
     else:
-        with db:
-            exercise = TemplateExercise.create(
-                template=training,
-                name=message.text.capitalize()
-            )
-            exercise.save()
+        save_template_exercise(message, training)  # запрос в базу
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
         markup.add(types.KeyboardButton("Да, это всё"))
         question = bot.send_message(
@@ -67,13 +67,7 @@ def exercise_generating(message, training):
 
 
 def create_a_new_training(message, data, message_id):
-    with db:
-        training = Training.create(
-            start=datetime.now(),
-            template=data[0],
-            user=message.from_user.id
-        )
-        training.save()
+    training = save_training(message, data)
     while messages_for_delete:
         bot.delete_message(
             message.chat.id,
@@ -131,7 +125,4 @@ def get_number_of_ex(message, training, data):
 
 
 def training_complete(message, training):
-    with db:
-        training.end = datetime.now()
-        training.save()
-    
+    save_end_of_training(training)

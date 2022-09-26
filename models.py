@@ -7,7 +7,7 @@ from peewee import (
     CharField,
     ForeignKeyField,
     DateTimeField,
-    TimeField
+    TimeField,
 )
 
 
@@ -50,7 +50,11 @@ class TemplateExercise(Model):
     Класс, хранящий виды упражнений для шаблонов.
     """
     id = PrimaryKeyField(unique=True)
-    template = ForeignKeyField(TemplateTraining, to_field='id')
+    template = ForeignKeyField(
+        TemplateTraining,
+        to_field='id',
+        related_name='tasks'
+    )
     name = CharField(max_length=75)
 
     class Meta:
@@ -68,8 +72,16 @@ class Training(Model):
     id = PrimaryKeyField(unique=True)
     start = DateTimeField(default=datetime.now)
     end = DateTimeField(default=datetime.now)
-    template = ForeignKeyField(TemplateTraining, to_field='name')
-    user = ForeignKeyField(User, to_field='user_id')
+    template = ForeignKeyField(
+        TemplateTraining,
+        to_field='name',
+        related_name='trainings'
+    )
+    user = ForeignKeyField(
+        User,
+        to_field='user_id',
+        related_name='trainings'
+    )
 
     class Meta:
         database = db
@@ -82,7 +94,11 @@ class Exercise(Model):
     """
     id = PrimaryKeyField(unique=True)
     template = ForeignKeyField(TemplateExercise, to_field='name')
-    training = ForeignKeyField(Training, to_field='id')
+    training = ForeignKeyField(
+        Training,
+        to_field='id',
+        related_name='exercises'
+    )
     time = TimeField(default=datetime.now)
     count = IntegerField()
     weight = IntegerField()

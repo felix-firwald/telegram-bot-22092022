@@ -1,13 +1,53 @@
 import sqlite3
+from datetime import datetime
+
 from peewee import SqliteDatabase
 
 from models import (
     User,
     TemplateTraining,
-    TemplateExercise
+    TemplateExercise,
+    Training
 )
 
 db = SqliteDatabase('data.db')
+
+
+def save_template_training(message):
+    with db:
+        training = TemplateTraining.create(
+            name=message.text.capitalize(),
+            author=message.from_user.id
+        )
+        training.save()
+    return training
+
+
+def save_template_exercise(message, training):
+    with db:
+        exercise = TemplateExercise.create(
+            template=training,
+            name=message.text.capitalize()
+        )
+        exercise.save()
+    return exercise
+
+
+def save_training(message, data):
+    with db:
+        training = Training.create(
+            start=datetime.now(),
+            template=data[0],
+            user=message.from_user.id
+        )
+        training.save()
+    return training
+
+
+def save_end_of_training(training):
+    with db:
+        training.end = datetime.now()
+        training.save()
 
 
 def clear():

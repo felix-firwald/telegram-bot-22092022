@@ -1,4 +1,5 @@
 from telebot import types
+from peewee import IntegrityError
 from peewee import SqliteDatabase
 
 from database import (

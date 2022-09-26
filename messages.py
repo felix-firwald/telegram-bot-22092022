@@ -92,11 +92,12 @@ def create_a_new_training(message, data, message_id):
 
 
 def switch(message, training, data):
-    if message.text == 'Записать упражнение' or message.text == 'Следующее упражнение':
+    text = message.text
+    if text == 'Записать упражнение' or text == 'Следующее упражнение':
         give_number = bot.send_message(
             message.chat.id,
             'Укажи номер упражнения для записи',
-            reply_markup=None
+            reply_markup=types.ReplyKeyboardRemove()
         )
         bot.register_next_step_handler(
             give_number,
@@ -104,11 +105,11 @@ def switch(message, training, data):
             training,
             data
         )
-    elif message.text == 'Закончить тренировку':
+    elif text == 'Закончить тренировку':
         bot.send_message(
             message.chat.id,
             'Тренировка окончена!',
-            reply_markup=None
+            reply_markup=types.ReplyKeyboardRemove()
         )
         training_complete(message, training)
 
@@ -149,6 +150,7 @@ def show_made_training(message, id):
     training = get_exercises_of_training(id)
     exercises = [[i.name, i.weight, i.count] for i in training[0]]
     name, start_time, end_time = training[1], training[2], training[3]
+    duration = end_time - start_time
     del training
     start_time = start_time.strftime('%H:%M')
     end_time = end_time.strftime('%H:%M')
@@ -164,9 +166,10 @@ def show_made_training(message, id):
                 value.append([exer[1], exer[2]])
     count = 0
     string = (
-        f'{name}'
-        f'\nНачало: {start_time}'
+        f'{name}\n'
+        f'\n<i>Начало: {start_time}'
         f'\nКонец: {end_time}'
+        f'\nДлительность: {duration}</i>'
     )
     for key, value in validation_dict.items():
         count += 1
@@ -174,9 +177,12 @@ def show_made_training(message, id):
         for weight, times in value:
             string += f'\n - {weight} кг {times} раз'
     print(validation_dict)
-    # string += f'\n\n{i+1}. {ex.name} {ex.weight} {ex.count}'
-    # print(string)
-    bot.send_message(message.chat.id, string, reply_markup=None)
+    bot.send_message(
+        message.chat.id,
+        string,
+        parse_mode='html',
+        reply_markup=types.ReplyKeyboardRemove()
+    )
 
 
 def choose_weight(message, data, exercise, training):
@@ -230,7 +236,7 @@ def switch_2(message, data, exercise, training):
         bot.send_message(
             message.chat.id,
             f'Тренировка окончена! {USE_MENU}',
-            reply_markup=None
+            reply_markup=types.ReplyKeyboardRemove()
         )
         training_complete(message, training)
     else:

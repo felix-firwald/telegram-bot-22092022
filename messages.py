@@ -96,6 +96,7 @@ def switch(message, training, data):
         give_number = bot.send_message(
             message.chat.id,
             'Укажи номер упражнения для записи',
+            reply_markup=None
         )
         bot.register_next_step_handler(
             give_number,
@@ -107,6 +108,7 @@ def switch(message, training, data):
         bot.send_message(
             message.chat.id,
             'Тренировка окончена!',
+            reply_markup=None
         )
         training_complete(message, training)
 
@@ -148,6 +150,8 @@ def show_made_training(message, id):
     exercises = [[i.name, i.weight, i.count] for i in training[0]]
     name, start_time, end_time = training[1], training[2], training[3]
     del training
+    start_time = start_time.strftime('%H:%M')
+    end_time = end_time.strftime('%H:%M')
     print(* exercises, sep='\n')
     validation_dict = dict()
     for i in range(len(exercises)):
@@ -172,7 +176,7 @@ def show_made_training(message, id):
     print(validation_dict)
     # string += f'\n\n{i+1}. {ex.name} {ex.weight} {ex.count}'
     # print(string)
-    bot.send_message(message.chat.id, string)
+    bot.send_message(message.chat.id, string, reply_markup=None)
 
 
 def choose_weight(message, data, exercise, training):
@@ -226,6 +230,7 @@ def switch_2(message, data, exercise, training):
         bot.send_message(
             message.chat.id,
             f'Тренировка окончена! {USE_MENU}',
+            reply_markup=None
         )
         training_complete(message, training)
     else:

@@ -136,7 +136,7 @@ def get_exercises_of_training(id):
         )
     return (
         exercises,
-        name,
+        name.name,
         training.start,
         training.end
     )

@@ -138,50 +138,46 @@ def get_weight(message, data, exercise, training):
 
 
 def training_complete(message, training):
-    if get_exercises_of_training(training.id)[-1] == 0:
-        bot.send_message(
-            message.chat.id,
-            f'Тренировка окончена! {USE_MENU}',
-            reply_markup=types.ReplyKeyboardRemove()
-        )
-        show_made_training(message, save_end_of_training(training))
-    else:
-        bot.send_message(
-            message.chat.id,
-            f'Ты не прикрепил ни одного упражнения! {USE_MENU}',
-            reply_markup=types.ReplyKeyboardRemove()
-        )
+    bot.send_message(
+        message.chat.id,
+        f'Тренировка окончена! {USE_MENU}',
+        reply_markup=types.ReplyKeyboardRemove()
+    )
+    show_made_training(message, save_end_of_training(training))
 
 
 def show_made_training(message, id):
-    format = '%H:%M'
     training = get_exercises_of_training(id)
     exercises = [[i.name, i.weight, i.count] for i in training[0]]
-    name, start_time, end_time = training[1], training[2], training[3]
-    del training
-    start_time = start_time.strftime(format)
-    end_time = end_time.strftime(format)
+    if not exercises:
+        string = '<i>Нет данных</i>'
+    else:
+        format = '%H:%M'
+        name, start_time, end_time = training[1], training[2], training[3]
+        del training
+        start_time = start_time.strftime(format)
+        end_time = end_time.strftime(format)
 
-    validation_dict = dict()
-    for i in range(len(exercises)):
-        ex = exercises[i]
-        validation_dict.setdefault(ex[0], [])
+        validation_dict = dict()
+        for i in range(len(exercises)):
+            ex = exercises[i]
+            validation_dict.setdefault(ex[0], [])
 
-    for key, value in validation_dict.items():
-        for exer in exercises:
-            if key == exer[0]:
-                value.append([exer[1], exer[2]])
-    count = 0
-    string = (
-        f'<b>{name}</b>\n'
-        f'\n<i>Начало: {start_time}'
-        f'\nКонец: {end_time}</i>'
-    )
-    for key, value in validation_dict.items():
-        count += 1
-        string += f'\n\n{count}. {key}'
-        for weight, times in value:
-            string += f'\n - {weight} кг {times} раз'
+        for key, value in validation_dict.items():
+            for exer in exercises:
+                if key == exer[0]:
+                    value.append([exer[1], exer[2]])
+        count = 0
+        string = (
+            f'<b>{name}</b>\n'
+            f'\n<i>Начало: {start_time}'
+            f'\nКонец: {end_time}</i>'
+        )
+        for key, value in validation_dict.items():
+            count += 1
+            string += f'\n\n{count}. {key}'
+            for weight, times in value:
+                string += f'\n - {weight} кг {times} раз'
     bot.send_message(
         message.chat.id,
         string,

@@ -129,7 +129,6 @@ def get_exercises_of_training(id):
         exercises = Exercise.select().where(
             Exercise.training == id
         )
-        print(exercises)
         training = Training.get(Training.id == id)
         name = TemplateTraining.get(
             TemplateTraining.id == training.template
@@ -138,6 +137,5 @@ def get_exercises_of_training(id):
         exercises,
         name.name,
         training.start,
-        training.end,
-        exercises.count()
+        training.end
     )

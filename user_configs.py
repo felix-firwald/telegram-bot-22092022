@@ -2,13 +2,11 @@ from telebot import types
 
 from database import delete_template_of_training
 from settings import (
-    bot,
-    DEFAULT_ANSWER,
-    USE_MENU
+    bot
 )
 
 
-COMMANDS = (
+COMMANDS_SETTINGS = (
     'Редактировать шаблон',
     'Удалить шаблон',
     'Назад в меню'
@@ -22,7 +20,7 @@ WHAT_YOU_CAN = (
 def user_configs_menu(message):
     chat = message.chat.id
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    for command in COMMANDS:
+    for command in COMMANDS_SETTINGS:
         markup.add(types.KeyboardButton(command))
     what_you_can = bot.send_message(
         chat,
@@ -34,7 +32,7 @@ def user_configs_menu(message):
 
 def switcher(message):
     text = message.text 
-    if text == COMMANDS[0]:
+    if text == COMMANDS_SETTINGS[0]:
         get_name = bot.send_message(
             message.chat.id,
             'Укажи название шаблона, который ты хочешь отредактировать:',
@@ -44,7 +42,7 @@ def switcher(message):
             get_name,
             edit_template
         )
-    elif text == COMMANDS[1]:
+    elif text == COMMANDS_SETTINGS[1]:
         get_name = bot.send_message(
             message.chat.id,
             'Укажи название шаблона, который ты хочешь удалить:',
@@ -53,6 +51,12 @@ def switcher(message):
         bot.register_next_step_handler(
             get_name,
             delete_template
+        )
+    else:
+        bot.send_message(
+            message.chat.id,
+            'Я НИЧЕГО НЕ ПОНЯЛА!',
+            reply_markup=types.ReplyKeyboardRemove()
         )
 
 

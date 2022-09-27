@@ -91,14 +91,10 @@ def training_choosen(call):
 
 
 def main_logic(message):
-    sec = bot.send_message(
+    bot.send_message(
         message.chat.id,
         '...',
         reply_markup=types.ReplyKeyboardRemove()
-    )
-    bot.delete_message(
-        sec.chat.id,
-        sec.id
     )
     text = message.text
     chat_id = message.chat.id
@@ -125,10 +121,6 @@ def main_logic(message):
         )
         bot.register_next_step_handler(get_name, template_generating)
     elif text == MENU_COMMANDS[3]:
-        bot.send_message(
-            chat_id,
-            'Введи название шаблона:'
-        )
         user_configs_menu(message)
     else:
         bot.send_message(chat_id, DEFAULT_ANSWER)

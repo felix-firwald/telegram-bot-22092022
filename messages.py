@@ -76,6 +76,7 @@ def create_a_new_training(message, data, message_id):
             message.chat.id,
             messages_for_delete.pop(0)
         )
+    bot.pin_chat_message(chat_id=message.chat.id, message_id=message_id)
     buttons = (
         'Записать упражнение',
         'Закончить тренировку'
@@ -88,7 +89,6 @@ def create_a_new_training(message, data, message_id):
         'Что будем делать?',
         reply_markup=markup
     )
-    bot.pin_chat_message(chat_id=message.chat.id, message_id=message_id)
     bot.register_next_step_handler(what_to_do, switch, training, data)
 
 

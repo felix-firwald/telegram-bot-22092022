@@ -145,3 +145,14 @@ def delete_training(id):
     with db:
         training = Training.get(Training.id == id)
         training.delete_instance()
+
+
+def delete_template_of_training(user, name):
+    with db:
+        template = TemplateTraining.get(
+            TemplateTraining.author == user,
+            TemplateTraining.name == name
+        )
+        exercises = [i for i in template.tasks]
+        template.delete_instance()
+    return exercises

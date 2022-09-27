@@ -70,13 +70,6 @@ def exercise_generating(message, training):
 
 
 def create_a_new_training(message, data, message_id):
-    training = save_training(message, data)
-    while messages_for_delete:
-        bot.delete_message(
-            message.chat.id,
-            messages_for_delete.pop(0)
-        )
-    bot.pin_chat_message(chat_id=message.chat.id, message_id=message_id)
     buttons = (
         'Записать упражнение',
         'Закончить тренировку'
@@ -89,6 +82,13 @@ def create_a_new_training(message, data, message_id):
         'Что будем делать?',
         reply_markup=markup
     )
+    training = save_training(message, data)
+    while messages_for_delete:
+        bot.delete_message(
+            message.chat.id,
+            messages_for_delete.pop(0)
+        )
+    bot.pin_chat_message(chat_id=message.chat.id, message_id=message_id)
     bot.register_next_step_handler(what_to_do, switch, training, data)
 
 

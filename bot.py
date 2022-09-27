@@ -1,5 +1,4 @@
 from telebot import types
-from peewee import IntegrityError
 from peewee import SqliteDatabase
 
 from database import (
@@ -19,7 +18,8 @@ from messages import (
     create_a_new_training,
     messages_for_delete
 )
-# from models import *
+from user_configs import user_configs_menu
+
 
 db = SqliteDatabase('data.db')
 # db.create_tables([
@@ -86,10 +86,14 @@ def training_choosen(call):
 
 
 def main_logic(message):
-    bot.send_message(
+    sec = bot.send_message(
         message.chat.id,
-        'Секунду...',
+        '...',
         reply_markup=types.ReplyKeyboardRemove()
+    )
+    bot.delete_message(
+        sec.chat.id,
+        sec.id
     )
     text = message.text
     chat_id = message.chat.id
@@ -115,6 +119,12 @@ def main_logic(message):
             'Введи название шаблона:'
         )
         bot.register_next_step_handler(get_name, template_generating)
+    elif text == MENU_COMMANDS[3]:
+        bot.send_message(
+            chat_id,
+            'Введи название шаблона:'
+        )
+        user_configs_menu(message)
     else:
         bot.send_message(chat_id, DEFAULT_ANSWER)
         answer_to_menu(message)

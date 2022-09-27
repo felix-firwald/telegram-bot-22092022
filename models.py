@@ -35,7 +35,11 @@ class TemplateTraining(Model):
     Класс, хранящий шаблоны тренировок.
     """
     id = PrimaryKeyField(unique=True)
-    author = ForeignKeyField(User, to_field='user_id')
+    author = ForeignKeyField(
+        User,
+        to_field='user_id',
+        backref='trainings'
+    )
     name = CharField(max_length=30)
 
     class Meta:
@@ -54,7 +58,7 @@ class TemplateExercise(Model):
     template = ForeignKeyField(
         TemplateTraining,
         to_field='id',
-        related_name='tasks'
+        backref='tasks'
     )
     name = CharField(max_length=75)
 

@@ -30,6 +30,12 @@ db = SqliteDatabase('data.db')
 #    User
 # ])
 
+
+@bot.message_handler(content_types=["pinned_message"])
+def delete_alarms(message):
+    bot.delete_message(message.chat.id, message.id)
+
+
 @bot.message_handler(commands=["start"])
 def answer_to_start(message):
     get_user_or_create(message)

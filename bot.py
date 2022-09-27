@@ -90,6 +90,11 @@ def training_choosen(call):
     func=lambda call: call.data.split('//')[0] == 'DELETE_TEMPL'
 )
 def train_template_id_for_delete(call):
+    while messages_for_delete:
+        bot.delete_message(
+            call.message.chat.id,
+            messages_for_delete.pop(0)
+        )
     bot.answer_callback_query(call.id)
     request = call.data.split('//')
     delete_template_of_training(request[1])

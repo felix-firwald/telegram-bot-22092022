@@ -7,6 +7,7 @@ from database import (
 from settings import (
     bot
 )
+from messages import messages_for_delete
 
 
 COMMANDS_SETTINGS = (
@@ -52,11 +53,12 @@ def switcher(message):
                 text=template.name,
                 callback_data=f'DELETE_TEMPL//{template.id}'
             ))
-        bot.send_message(
+        choice = bot.send_message(
             message.chat.id,
             'Укажи название шаблона, который ты хочешь удалить:',
             reply_markup=markup
         )
+        messages_for_delete.append(choice.id)
     else:
         bot.send_message(
             message.chat.id,

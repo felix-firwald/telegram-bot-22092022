@@ -1,6 +1,9 @@
 from telebot import types
 
-from database import delete_template_of_training
+from database import (
+    delete_template_of_training,
+    get_templates_of_user
+)
 from settings import (
     bot
 )
@@ -31,7 +34,7 @@ def user_configs_menu(message):
 
 
 def switcher(message):
-    text = message.text 
+    text = message.text
     if text == COMMANDS_SETTINGS[0]:
         get_name = bot.send_message(
             message.chat.id,
@@ -48,10 +51,12 @@ def switcher(message):
             'Укажи название шаблона, который ты хочешь удалить:',
             reply_markup=types.ReplyKeyboardRemove()
         )
-        bot.register_next_step_handler(
-            get_name,
-            delete_template
-        )
+        markup = types.InlineKeyboardMarkup()
+        for template in get_templates_of_user(message.from_user.id):
+            markup.add(types.InlineKeyboardButton(
+                text=template.name,
+                callback_data=f'DELETE_TEMPL//{template.id}'
+            ))
     else:
         bot.send_message(
             message.chat.id,

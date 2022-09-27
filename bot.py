@@ -5,7 +5,8 @@ from database import (
     clear,
     get_user_or_create,
     get_templates_of_user,
-    get_exercises_of_template
+    get_exercises_of_template,
+    delete_template_of_training
 )
 from settings import (
     bot,
@@ -34,11 +35,6 @@ db = SqliteDatabase('data.db')
 @bot.message_handler(content_types=["pinned_message"])
 def delete_alarms(message):
     bot.delete_message(message.chat.id, message.id)
-    bot.send_message(
-        message.chat.id,
-        'pinned message deleted',
-        reply_markup=types.ReplyKeyboardRemove()
-    )
 
 
 @bot.message_handler(commands=["start"])
@@ -88,6 +84,15 @@ def training_choosen(call):
         reply_markup=None
     )
     create_a_new_training(message, data, message.id)
+
+
+@bot.callback_query_handler(
+    func=lambda call: call.data.split('//')[0] == 'DELETE_TEMPL'
+)
+def train_template_id_for_delete(call):
+    bot.answer_callback_query(call.id)
+    request = call.data.split('//')
+    delete_template_of_training(request[1])
 
 
 def main_logic(message):

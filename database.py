@@ -147,10 +147,9 @@ def delete_training(id):
         training.delete_instance()
 
 
-def delete_template_of_training(user, name):
+def delete_template_of_training(id):
     with db:
         template = TemplateTraining.get(
-            TemplateTraining.name == name,
-            TemplateTraining.author == user,
+            TemplateTraining.id == id
         )
         template.delete_instance()

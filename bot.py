@@ -68,6 +68,7 @@ def answer_to_menu(message):
     func=lambda call: call.data.split('//')[0] == 'TEMPL'
 )
 def training_choosen(call):
+    bot.answer_callback_query(call.id)
     chat_id = call.message.chat.id
     request = call.data.split('//')
     data = get_exercises_of_template(request[1])

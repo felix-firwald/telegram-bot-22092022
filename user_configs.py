@@ -46,17 +46,17 @@ def switcher(message):
             edit_template
         )
     elif text == COMMANDS_SETTINGS[1]:
-        get_name = bot.send_message(
-            message.chat.id,
-            'Укажи название шаблона, который ты хочешь удалить:',
-            reply_markup=types.ReplyKeyboardRemove()
-        )
         markup = types.InlineKeyboardMarkup()
         for template in get_templates_of_user(message.from_user.id):
             markup.add(types.InlineKeyboardButton(
                 text=template.name,
                 callback_data=f'DELETE_TEMPL//{template.id}'
             ))
+        bot.send_message(
+            message.chat.id,
+            'Укажи название шаблона, который ты хочешь удалить:',
+            reply_markup=markup
+        )
     else:
         bot.send_message(
             message.chat.id,

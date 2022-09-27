@@ -84,7 +84,6 @@ def training_choosen(call):
     create_a_new_training(message, data, message.id)
 
 
-# @bot.message_handler(content_types=["text"])
 def main_logic(message):
     bot.send_message(
         message.chat.id,
@@ -107,7 +106,6 @@ def main_logic(message):
             reply_markup=markup
         )
         messages_for_delete.append(choice_template.id)
-        # bot.register_next_step_handler(choice_template, new_training)
     elif text == MENU_COMMANDS[1]:
         pass
     elif text == MENU_COMMANDS[2]:
@@ -119,10 +117,6 @@ def main_logic(message):
     else:
         bot.send_message(chat_id, DEFAULT_ANSWER)
         answer_to_menu(message)
-
-
-def new_training(message):
-    bot.send_message(message.chat.id, 'You send me message')
 
 
 @bot.message_handler(commands=["clear", "clean"])

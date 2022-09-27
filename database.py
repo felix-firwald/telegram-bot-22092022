@@ -139,3 +139,9 @@ def get_exercises_of_training(id):
         training.start,
         training.end
     )
+
+
+def delete_training(id):
+    with db:
+        training = Training.get(Training.id == id)
+        training.delete_instance()

@@ -9,7 +9,8 @@ from database import (
     save_training,
     save_end_of_training,
     save_exercise,
-    get_exercises_of_training
+    get_exercises_of_training,
+    delete_training
 )
 from settings import bot, USE_MENU
 
@@ -143,6 +144,7 @@ def training_complete(message, training):
         f'Тренировка окончена! {USE_MENU}',
         reply_markup=types.ReplyKeyboardRemove()
     )
+    bot.unpin_all_chat_messages(message.chat.id)
     show_made_training(message, save_end_of_training(training))
 
 
@@ -150,7 +152,11 @@ def show_made_training(message, id):
     training = get_exercises_of_training(id)
     exercises = [[i.name, i.weight, i.count] for i in training[0]]
     if not exercises:
-        string = '<i>Нет данных</i>'
+        string = (
+            '<i>Нет данных.'
+            '\nТренировка не была сохранена.</i>'
+        )
+        delete_training(id)
     else:
         format = '%H:%M'
         name, start_time, end_time = training[1], training[2], training[3]
@@ -231,12 +237,11 @@ def switch_2(message, data, exercise, training):
     if text == 'Добавить подход':
         get_weight(message, data, exercise, training)
     elif text == 'Следующее упражнение':
-        # get_number_of_ex(message, training, data)
         switch(message, training, data)
     elif text == 'Закончить тренировку':
         training_complete(message, training)
     else:
         bot.send_message(
             message.chat.id,
-            'Нет такого варианта блять!',
+            'Нет такого варианта!',
         )

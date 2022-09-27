@@ -149,7 +149,7 @@ def delete_training(id):
 
 def delete_template_of_training(user, name):
     with db:
-        template = TemplateTraining.select().where(
+        template = TemplateTraining.get(
             TemplateTraining.name == name,
             TemplateTraining.author == user,
         )

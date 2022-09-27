@@ -106,11 +106,6 @@ def switch(message, training, data):
             data
         )
     elif text == 'Закончить тренировку':
-        bot.send_message(
-            message.chat.id,
-            'Тренировка окончена!',
-            reply_markup=types.ReplyKeyboardRemove()
-        )
         training_complete(message, training)
 
 
@@ -143,7 +138,19 @@ def get_weight(message, data, exercise, training):
 
 
 def training_complete(message, training):
-    show_made_training(message, save_end_of_training(training))
+    if get_exercises_of_training(training.id)[-1] == 0:
+        bot.send_message(
+            message.chat.id,
+            f'Тренировка окончена! {USE_MENU}',
+            reply_markup=types.ReplyKeyboardRemove()
+        )
+        show_made_training(message, save_end_of_training(training))
+    else:
+        bot.send_message(
+            message.chat.id,
+            f'Ты не прикрепил ни одного упражнения! {USE_MENU}',
+            reply_markup=types.ReplyKeyboardRemove()
+        )
 
 
 def show_made_training(message, id):
@@ -166,7 +173,7 @@ def show_made_training(message, id):
                 value.append([exer[1], exer[2]])
     count = 0
     string = (
-        f'{name}\n'
+        f'<b>{name}</b>\n'
         f'\n<i>Начало: {start_time}'
         f'\nКонец: {end_time}</i>'
     )
@@ -231,11 +238,6 @@ def switch_2(message, data, exercise, training):
         # get_number_of_ex(message, training, data)
         switch(message, training, data)
     elif text == 'Закончить тренировку':
-        bot.send_message(
-            message.chat.id,
-            f'Тренировка окончена! {USE_MENU}',
-            reply_markup=types.ReplyKeyboardRemove()
-        )
         training_complete(message, training)
     else:
         bot.send_message(

@@ -138,5 +138,6 @@ def get_exercises_of_training(id):
         exercises,
         name.name,
         training.start,
-        training.end
+        training.end,
+        exercises.count()
     )

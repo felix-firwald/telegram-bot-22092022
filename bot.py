@@ -34,6 +34,11 @@ db = SqliteDatabase('data.db')
 @bot.message_handler(content_types=["pinned_message"])
 def delete_alarms(message):
     bot.delete_message(message.chat.id, message.id)
+    bot.send_message(
+        message.chat.id,
+        'pinned message deleted',
+        reply_markup=types.ReplyKeyboardRemove()
+    )
 
 
 @bot.message_handler(commands=["start"])

@@ -56,7 +56,8 @@ def switcher(message):
         )
 
 
-def edit_template(message, name):
+def edit_template(message):
+    name = message.text
     bot.send_message(
         message.chat.id,
         '<i>Этот функционал временно недоступен</i>',
@@ -65,7 +66,8 @@ def edit_template(message, name):
     )
 
 
-def delete_template(message, name):
+def delete_template(message):
+    name = message.text
     final = delete_template_of_training(
         message.from_user.id,
         name

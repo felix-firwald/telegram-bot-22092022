@@ -159,8 +159,10 @@ def show_made_training(message, id):
         delete_training(id)
     else:
         format = '%H:%M'
+        format_date = '%d.%m.%Y'
         name, start_time, end_time = training[1], training[2], training[3]
         del training
+        date = start_time.strftime(format_date)
         start_time = start_time.strftime(format)
         end_time = end_time.strftime(format)
 
@@ -175,7 +177,7 @@ def show_made_training(message, id):
                     value.append([exer[1], exer[2]])
         count = 0
         string = (
-            f'#<b>{name}</b>\n'
+            f'#<b>{name}</b> ({date})\n'
             f'\n<i>Начало: {start_time}'
             f'\nКонец: {end_time}</i>'
         )

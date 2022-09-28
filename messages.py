@@ -175,7 +175,7 @@ def show_made_training(message, id):
                     value.append([exer[1], exer[2]])
         count = 0
         string = (
-            f'<b>{name}</b>\n'
+            f'#<b>{name}</b>\n'
             f'\n<i>Начало: {start_time}'
             f'\nКонец: {end_time}</i>'
         )

@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime
+from pytz import timezone
 
 from peewee import SqliteDatabase
 
@@ -37,7 +38,7 @@ def save_template_exercise(message, training):
 def save_training(message, data):
     with db:
         training = Training.create(
-            start=datetime.now(),
+            start=datetime.now(timezone('Europe/Moscow')),
             template=data[0],
             user=message.from_user.id
         )
@@ -47,7 +48,7 @@ def save_training(message, data):
 
 def save_end_of_training(training):
     with db:
-        training.end = datetime.now()
+        training.end = datetime.now(timezone('Europe/Moscow'))
         training.save()
     return training.id
 
@@ -59,7 +60,7 @@ def save_exercise(count, training, exercise, weight):
             count=int(count),
             weight=weight,
             training=training.id,
-            time=datetime.now()
+            time=datetime.now(timezone('Europe/Moscow'))
         )
 
 

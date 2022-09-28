@@ -99,7 +99,7 @@ def train_template_id_for_delete(call):
     request = call.data.split('//')
     delete_template_of_training(request[1])
 
-
+# комментарий
 def main_logic(message):
     bot.send_message(
         message.chat.id,

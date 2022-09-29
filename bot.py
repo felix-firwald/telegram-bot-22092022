@@ -6,7 +6,8 @@ from database import (
     get_user_or_create,
     get_templates_of_user,
     get_exercises_of_template,
-    delete_template_of_training
+    get_all_trainings_of_user,
+    delete_template_of_training,
 )
 from settings import (
     bot,
@@ -17,6 +18,7 @@ from settings import (
 from messages import (
     template_generating,
     create_a_new_training,
+    show_made_training,
     messages_for_delete
 )
 from user_configs import user_configs_menu
@@ -146,7 +148,9 @@ def main_logic(message):
         )
         messages_for_delete.append(choice_template.id)
     elif text == MENU_COMMANDS[1]:
-        pass
+        trainings = get_all_trainings_of_user(user_id)
+        for id in trainings:
+            show_made_training(message, id)
     elif text == MENU_COMMANDS[2]:
         get_name = bot.send_message(
             chat_id,

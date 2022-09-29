@@ -139,6 +139,14 @@ def get_exercises_of_training(id):
     )
 
 
+def get_all_trainings_of_user(id):
+    with db:
+        trainings = Training.select().where(
+            Training.user == id
+        )
+    return [one.id for one in trainings]
+
+
 def delete_training(id):
     with db:
         training = Training.get(Training.id == id)

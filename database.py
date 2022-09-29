@@ -141,8 +141,11 @@ def get_exercises_of_training(id):
 
 def get_all_trainings_of_user(id):
     with db:
+        user = User.get(
+            User.user_id == id
+        )
         trainings = Training.select().where(
-            Training.user == id
+            Training.user == user
         )
         data = [one.id for one in trainings]
         print(data)

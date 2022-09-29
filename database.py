@@ -88,10 +88,8 @@ def get_user_or_create(message):
     with db:
         try:
             user = User.get(User.user_id == user_id)
-            print("пользователь есть")
             return user
         except Exception:
-            print("пользователя нет")
             user = User.create(
                 user_id=user_id,
                 chat_id=chat_id

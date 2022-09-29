@@ -34,11 +34,19 @@ db = SqliteDatabase('data.db')
 
 @bot.message_handler(content_types=["pinned_message"])
 def delete_alarms(message):
+    '''
+    Просто для красоты: пускай бот удаляет
+    системные сообщения о том, что он закрепил сообщение.
+    '''
     bot.delete_message(message.chat.id, message.id)
 
 
 @bot.message_handler(commands=["start"])
 def answer_to_start(message):
+    '''
+    Эта функция встречает юзера,
+    который впервые зашел в бота.
+    '''
     get_user_or_create(message)
     bot.send_message(
         message.chat.id,
@@ -49,6 +57,9 @@ def answer_to_start(message):
 
 @bot.message_handler(commands=["menu"])
 def answer_to_menu(message):
+    '''
+    Функция выводит кнопки главного меню.
+    '''
     get_user_or_create(message)
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     for command in MENU_COMMANDS:
@@ -69,6 +80,10 @@ def answer_to_menu(message):
     func=lambda call: call.data.split('//')[0] == 'TEMPL'
 )
 def training_choosen(call):
+    '''
+    Функция работает при нажатии юзером на inline-кнопку
+    при выборе шаблона для тренировки.
+    '''
     bot.answer_callback_query(call.id)
     chat_id = call.message.chat.id
     request = call.data.split('//')
@@ -90,6 +105,10 @@ def training_choosen(call):
     func=lambda call: call.data.split('//')[0] == 'DELETE_TEMPL'
 )
 def train_template_id_for_delete(call):
+    '''
+    Функция работает при нажатии юзером на inline-кнопку
+    при выборе шаблона тренировки, который он хочет удалить.
+    '''
     while messages_for_delete:
         bot.delete_message(
             call.message.chat.id,
@@ -99,8 +118,12 @@ def train_template_id_for_delete(call):
     request = call.data.split('//')
     delete_template_of_training(request[1])
 
-# комментарий
+
 def main_logic(message):
+    '''
+    Юзер нажал на одну из кнопок главного меню
+    и в этой функции происходит обработка этого действия.
+    '''
     bot.send_message(
         message.chat.id,
         '...',
@@ -139,6 +162,10 @@ def main_logic(message):
 
 @bot.message_handler(commands=["clear", "clean"])
 def clear_database(message):
+    '''
+    Функция в дальнейшем будет удалена,
+    но пока что играет незаменимую роль в тестировании.
+    '''
     clear()
     bot.send_message(
         message.chat.id,

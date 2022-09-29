@@ -5,6 +5,7 @@ from database import (
     get_templates_of_user
 )
 from settings import (
+    USE_MENU,
     bot
 )
 from messages import messages_for_delete
@@ -12,8 +13,7 @@ from messages import messages_for_delete
 
 COMMANDS_SETTINGS = (
     'Редактировать шаблон',
-    'Удалить шаблон',
-    'Назад в меню'
+    'Удалить шаблон'
 )
 WHAT_YOU_CAN = (
     'При помощи меню настроек '
@@ -22,6 +22,10 @@ WHAT_YOU_CAN = (
 
 
 def user_configs_menu(message):
+    """
+    Функция выдаёт юзеру, что он может делать
+    в рамках меню настроек (на самом деле почти ничего).
+    """
     chat = message.chat.id
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     for command in COMMANDS_SETTINGS:
@@ -35,6 +39,11 @@ def user_configs_menu(message):
 
 
 def switcher(message):
+    """
+    Функция обрабатывает ответ юзера
+    по поводу того, что он хочет сделать в "настройках".
+    На данный момент работает только возможность удаления шаблонов.
+    """
     text = message.text
     if text == COMMANDS_SETTINGS[0]:
         get_name = bot.send_message(
@@ -62,13 +71,16 @@ def switcher(message):
     else:
         bot.send_message(
             message.chat.id,
-            'Я НИЧЕГО НЕ ПОНЯЛА!',
+            f'Непонятный ответ!{USE_MENU}',
             reply_markup=types.ReplyKeyboardRemove()
         )
 
 
 def edit_template(message):
-    name = message.text
+    """
+    В будущем эта функция должна будет
+    предоставлять возможность к редактированию шаблонов тренировки.
+    """
     bot.send_message(
         message.chat.id,
         '<i>Этот функционал временно недоступен</i>',
@@ -78,6 +90,9 @@ def edit_template(message):
 
 
 def delete_template(message):
+    """
+    Функция удаляет шаблон тренировки.
+    """
     name = message.text
     final = delete_template_of_training(
         message.from_user.id,

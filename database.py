@@ -144,7 +144,9 @@ def get_all_trainings_of_user(id):
         trainings = Training.select().where(
             Training.user == id
         )
-    return [one.id for one in trainings]
+        data = [one.id for one in trainings]
+        print(data)
+    return data
 
 
 def delete_training(id):

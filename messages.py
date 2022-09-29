@@ -229,7 +229,6 @@ def choose_weight(message, data, exercise, training):
         bot.register_next_step_handler(
             if_error,
             choose_weight,
-            message,
             data,
             exercise,
             training
